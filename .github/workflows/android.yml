@@ -20,22 +20,12 @@ jobs:
         run: |
           wget -q https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
           unzip -q gradle-7.3.3-bin.zip
-          export PATH=$PWD/gradle-7.3.3/bin:$PATH
           echo "$PWD/gradle-7.3.3/bin" >> $GITHUB_PATH
-
-      - name: Create gradle.properties
-        run: |
-          echo "android.useAndroidX=true" > gradle.properties
-          echo "android.enableJetifier=true" >> gradle.properties
 
       - name: Accept Android SDK licenses
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-      - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AlertSystem
-          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Create gradle.properties
+        working-directory: ./AnuragAlert
+        run: |
+          echo "androi
