@@ -16,8 +16,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Install Gradle
+        run: |
+          wget -q https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+          unzip -q gradle-7.3.3-bin.zip
+          export PATH=$PWD/gradle-7.3.3/bin:$PATH
+          echo "$PWD/gradle-7.3.3/bin" >> $GITHUB_PATH
 
       - name: Create gradle.properties
         run: |
@@ -26,9 +30,6 @@ jobs:
 
       - name: Accept Android SDK licenses
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Give gradlew permission
-        run: chmod +x gradlew
 
       - name: Build Debug APK
         run: gradle assembleDebug --no-daemon
